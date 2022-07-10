@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+
 import ca.sheridancollege.fourothreeindustries.domain.*;
 import ca.sheridancollege.fourothreeindustries.repos.*;
 
@@ -36,6 +37,8 @@ public class BootstrapData implements CommandLineRunner{
 	private EmailGroupRepository egr;
 	@Autowired
 	private RoleRepository rgr;
+	@Autowired
+	private EventRepository er;
 	
 
 	
@@ -45,6 +48,25 @@ public class BootstrapData implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Event e1 = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday").build();
+		Event e1a = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 2").build();
+		Event e1b = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 3").build();
+		Event e1c = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 4").build();
+		Event e2 = Event.builder().date(LocalDate.of(2022, 2, 15)).name("Gen Birthday").build();
+		Event e3 = Event.builder().date(LocalDate.of(2022, 5, 27)).name("Brad Birthday").build();
+		Event e4 = Event.builder().date(LocalDate.of(2022, 8, 30)).name("Alex Birthday").build();
+		Event e5 = Event.builder().date(LocalDate.of(2022, 12, 25)).name("Christman").build();
+		
+		er.save(e1);
+		er.save(e1a);
+		er.save(e1b);
+		er.save(e1c);
+		er.save(e2);
+		er.save(e3);
+		er.save(e4);
+		er.save(e5);
+		
 		Role admin = Role.builder().roleName("ADMIN").build();
 		Role tm = Role.builder().roleName("TEAM_MEMBER").build();
 		Role volunteer = Role.builder().roleName("VOLUNTEER").build();

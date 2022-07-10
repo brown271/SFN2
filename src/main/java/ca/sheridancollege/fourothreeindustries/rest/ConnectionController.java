@@ -29,12 +29,5 @@ public class ConnectionController {
 		return "{\"message\":\"GREAT SUCCESS! CONNECTION WORKS!\"}";
 	}
 	
-	@PostMapping("/login")
-	public String login(@RequestBody Account acc) {
-		if(acr.findByUsernameLike(acc.getUsername()).size() > 0) {
-			
-		}
-		return null;
-	}
 
 }
