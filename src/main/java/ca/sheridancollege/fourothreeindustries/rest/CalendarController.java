@@ -4,8 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,10 +22,16 @@ public class CalendarController {
 	private EventRepository er;
 	
 	@GetMapping("/")
-	public List<DateEvents> getCalendar(){
+	public List<DateEvents> getCurrentCalendar(){
 		System.out.println("connection");
 		LocalDate date = LocalDate.now();
 		date = LocalDate.of(date.getYear(),date.getMonth(),1);
+		return CalendarService.generateCalendar(date, er);
+	}
+	
+	@GetMapping("/{month}/{year}")
+	public List<DateEvents> getSpecificCalendar(@PathVariable Long month, @PathVariable Long year){
+		LocalDate date = LocalDate.of(year.intValue(), month.intValue(), 1);
 		return CalendarService.generateCalendar(date, er);
 	}
 }
