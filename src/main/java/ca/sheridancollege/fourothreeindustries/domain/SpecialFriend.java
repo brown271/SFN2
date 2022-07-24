@@ -39,6 +39,11 @@ public class SpecialFriend {
 	private Boolean isCostAFactor;
 	private Boolean isBirthdayClubMember;
 	
+	public String JSONify() {
+		return "{\"id\":\"" + this.id + "\",\"email\":\"" + this.getPersonalInfo().getEmail() + "\"}";
+		
+	}
+	
 
 	@ManyToMany(mappedBy = "specialFriends")
 	List<EmailGroup> groups;
