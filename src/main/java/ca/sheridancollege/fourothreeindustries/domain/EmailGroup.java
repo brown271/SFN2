@@ -45,6 +45,24 @@ public class EmailGroup {
 			inverseJoinColumns = @JoinColumn(name = "account_id"))
 	private List<Account> SFNAccounts;
 	
+	public String JSONify() {
+		String json =  "{\"id\":\"" + this.id + "\",\"name\":\"" + this.name + "\",\"description\":\""+ this.description + "\","
+				+ "\"sfAccounts\":[ ";
+				for(Account a: SFNAccounts) {
+					json +=	a.JSONify() + ",";
+				}
+				json = (json.substring(0,json.length()-1) + "],\"sFriends\":[ ");
+				for(SpecialFriend sf: specialFriends) {
+					json +=	sf.JSONify() + ",";
+				}
+				json = (json.substring(0,json.length()-1) + "],\"roles\":[ ");
+				for(Role r: roles) {
+					json +=	"\"" + r.getRoleName() + "\",";
+				}
+				json = (json.substring(0,json.length()-1) + "]}");
+		
+		return json;
+	}
 	public int sizeOfAllUsersInGroup() {
 		if (this.getSFNAccounts() == null || this.getSpecialFriends() == null) {
 			return 0;
@@ -52,9 +70,6 @@ public class EmailGroup {
 		return this.getSFNAccounts().size() + this.getSpecialFriends().size();
 	}
 
-	//add a role here
-	//email groups should be limited to certain account types
-	//one to many relation
 	
 	@ManyToMany()
 	private List<Role> roles;

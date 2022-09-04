@@ -61,6 +61,17 @@ public class Account implements UserDetails{
 		return authorities;
 		
 	}
+	
+	public String JSONify() {
+		String json = "{\"id\":\"" + this.id + "\",\"username\":\"" + this.username + "\",\"email\":\"" + this.getPersonalInfo().getEmail() + "\",\"name\":\"" + (this.getPersonalInfo().getFirstName() + " " + this.getPersonalInfo().getLastName())  + "\","
+				+ "\"roles\":[";
+		for(Role r: roles) {
+			json += ("\"" + r.getRoleName() + "\",");
+		}
+		json = (json.substring(0,json.length()-1) + "]}");
+		return json;
+		
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {

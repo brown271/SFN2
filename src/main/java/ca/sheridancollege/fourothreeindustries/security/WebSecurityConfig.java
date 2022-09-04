@@ -38,6 +38,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		//no security
+		//http.authorizeRequests().anyRequest().permitAll();
+		// http.csrf().disable();
+		 //   http.headers().frameOptions().disable();
+		   
+		//security
 		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().antMatchers("/api/test/login").permitAll();
@@ -47,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		http.addFilter(filter);
 		http.addFilterBefore(new CustomAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 		
-		//http.formLogin().loginProcessingUrl(null)
+	
 
 	}
 	
