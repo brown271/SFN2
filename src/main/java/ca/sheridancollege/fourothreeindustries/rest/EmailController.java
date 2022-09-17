@@ -35,6 +35,7 @@ public class EmailController {
 	@GetMapping("/page/{page}")
 	//@PreAuthorize("hasAuthority('ADMIN')")
 	public String getEmailGroups(@PathVariable Long page) {
+		System.out.println("\n\nRequest for a group from page: " + page + "\n\n");
 		Pageable pageRequest = PageRequest.of(page.intValue(), pageSize);
 		//System.out.println(egr.findAll(pageRequest));
 		Page<EmailGroup> yup = egr.findAll(pageRequest);
@@ -43,6 +44,9 @@ public class EmailController {
 			json+= eg.JSONify() + ",";
 		}
 		json = (json.substring(0,json.length()-1) + "]");
+		if(json.length() == 1) {
+			return "[]";
+		}
 		return json;
 	}
 	

@@ -51,9 +51,16 @@ public class GroupController {
 		return "{\"emailGroup\":\"null\"}";
 	}
 	
+	@GetMapping("/deleteById/{id}")
+	public String deleteGroupById(@PathVariable Long id) {
+		egr.deleteById(id);
+		return "{\"message\":\"Group Deleted!\"}";
+	}
+	
 	@GetMapping("/page/{page}")
 	//@PreAuthorize("hasAuthority('ADMIN')")
 	public String getEmailGroups(@PathVariable Long page) {
+		
 		Pageable pageRequest = PageRequest.of(page.intValue(), pageSize);
 		//System.out.println(egr.findAll(pageRequest));
 		Page<EmailGroup> yup = egr.findAll(pageRequest);
@@ -62,6 +69,7 @@ public class GroupController {
 			json+= eg.JSONify() + ",";
 		}
 		json = (json.substring(0,json.length()-1) + "]");
+		
 		return json;
 	}
 	
