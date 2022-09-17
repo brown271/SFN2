@@ -47,30 +47,23 @@ public class EmailGroup {
 	
 	public String JSONify() {
 		String json =  "{\"id\":\"" + this.id + "\",\"name\":\"" + this.name + "\",\"description\":\""+ this.description + "\","
-				+ "\"sfAccounts\":[ ";
+				+ "\"SFNAccounts\":[ ";
 				for(Account a: SFNAccounts) {
 					json +=	a.JSONify() + ",";
 				}
-				json = (json.substring(0,json.length()-1) + "],\"sFriends\":[ ");
+				json = (json.substring(0,json.length()-1) + "],\"specialFriends\":[ ");
 				for(SpecialFriend sf: specialFriends) {
 					json +=	sf.JSONify() + ",";
 				}
-				json = (json.substring(0,json.length()-1) + "],\"roles\":[ ");
+				json = (json.substring(0,json.length()-1) + "],\"roles\":[");
 				for(Role r: roles) {
-					json +=	"\"" + r.getRoleName() + "\",";
+					json +=	r.JSONify() + ",";
 				}
 				json = (json.substring(0,json.length()-1) + "]}");
 		
 		return json;
 	}
-	public int sizeOfAllUsersInGroup() {
-		if (this.getSFNAccounts() == null || this.getSpecialFriends() == null) {
-			return 0;
-		}
-		return this.getSFNAccounts().size() + this.getSpecialFriends().size();
-	}
 
-	
 	@ManyToMany()
 	private List<Role> roles;
 }

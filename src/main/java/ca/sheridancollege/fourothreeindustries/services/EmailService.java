@@ -1,10 +1,6 @@
 package ca.sheridancollege.fourothreeindustries.services;
 
 
-
-
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.mail.SimpleMailMessage;
@@ -12,15 +8,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import org.springframework.stereotype.Service;
 
-import ca.sheridancollege.fourothreeindustries.domain.*;
-
 @Service
-public class EmailService { //VERSION - 2: DOUBLE EMAIL FIXED!
+public  class EmailService { //VERSION - 2: DOUBLE EMAIL FIXED!
 	
 
 	
 	//jms is our default java mail sender, just used to pass in email account and password
-	public Boolean sendEmail(JavaMailSender jms, List<String> emails, String subject, String message )  {
+	public static Boolean sendEmail(JavaMailSender jms, List<String> emails, String subject, String message )  {
 		
 		//create a new empty email message
 		SimpleMailMessage msg = new SimpleMailMessage();

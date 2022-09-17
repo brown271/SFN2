@@ -28,7 +28,6 @@ public class EmailController {
 	@Autowired
 	private EmailGroupRepository egr;
 	private int pageSize =  5;
-	private EmailService emailer = new EmailService();
 	@Autowired
 	private JavaMailSender jms;
 

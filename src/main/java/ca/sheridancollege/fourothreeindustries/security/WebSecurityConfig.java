@@ -40,19 +40,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		//no security
-		//http.authorizeRequests().anyRequest().permitAll();
-		// http.csrf().disable();
-		 //   http.headers().frameOptions().disable();
+		 http.authorizeRequests().anyRequest().permitAll();
+		 http.csrf().disable();
+		 http.headers().frameOptions().disable();
 		   
 		//security
-		http.csrf().disable();
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeRequests().antMatchers("/api/test/login").permitAll();
-		http.authorizeRequests().antMatchers("/api/test/conn").hasAuthority("ADMIN");
-		CustomAuthenticationFilter filter = new CustomAuthenticationFilter(authenticationManagerBean());
-		filter.setFilterProcessesUrl("/api/test/login");
-		http.addFilter(filter);
-		http.addFilterBefore(new CustomAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+		//http.csrf().disable();
+		//http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		//http.authorizeRequests().antMatchers("/api/test/login").permitAll();
+		//http.authorizeRequests().antMatchers("/api/test/conn").hasAuthority("ADMIN");
+		//CustomAuthenticationFilter filter = new CustomAuthenticationFilter(authenticationManagerBean());
+		//filter.setFilterProcessesUrl("/api/test/login");
+		//http.addFilter(filter);
+		//http.addFilterBefore(new CustomAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 		
 	
 
