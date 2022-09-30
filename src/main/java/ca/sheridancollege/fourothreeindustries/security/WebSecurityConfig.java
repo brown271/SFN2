@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import ca.sheridancollege.fourothreeindustries.filters.CorsFilter;
 import ca.sheridancollege.fourothreeindustries.filters.CustomAuthFilter;
 import ca.sheridancollege.fourothreeindustries.filters.CustomAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -49,9 +50,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().antMatchers("/api/test/login").permitAll();
 		http.authorizeRequests().antMatchers("/api/test/conn").hasAuthority("ADMIN");
-		CustomAuthenticationFilter filter = new CustomAuthenticationFilter(authenticationManagerBean());
+		CustomAuthenticationFilter filter = 
+				new CustomAuthenticationFilter(authenticationManagerBean());
 		filter.setFilterProcessesUrl("/api/test/login");
+		CorsFilter filter2 = new CorsFilter();
 		http.addFilter(filter);
+		http.addFilterBefore(filter2, CustomAuthenticationFilter.class);
+		
 		http.addFilterBefore(new CustomAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 		
 	

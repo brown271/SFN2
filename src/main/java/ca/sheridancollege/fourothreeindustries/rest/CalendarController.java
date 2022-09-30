@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +21,7 @@ public class CalendarController {
 	@Autowired
 	private EventRepository er;
 	
+	@CrossOrigin()
 	@GetMapping("/")
 	public List<DateEvents> getCurrentCalendar(){
 		System.out.println("connection");
@@ -29,6 +30,7 @@ public class CalendarController {
 		return CalendarService.generateCalendar(date, er);
 	}
 	
+	@CrossOrigin()
 	@GetMapping("/{month}/{year}")
 	public List<DateEvents> getSpecificCalendar(@PathVariable Long month, @PathVariable Long year){
 		LocalDate date = LocalDate.of(year.intValue(), month.intValue(), 1);

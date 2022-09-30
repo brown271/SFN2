@@ -48,6 +48,8 @@ public class BootstrapData implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
+	
+		
 		
 		Event e1 = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday").build();
 		Event e1a = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 2").build();
@@ -90,6 +92,7 @@ public class BootstrapData implements CommandLineRunner{
 			makeTeamMembers(sizeFile);
 			makeGroups(groupNames.size()/2,savedVs,savedSFs);
 		}
+		
 		
 		
 	}

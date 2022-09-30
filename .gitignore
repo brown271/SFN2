@@ -19,6 +19,9 @@ target/
 *.iml
 *.ipr
 
+src/main/resources
+src/main/java/ca/sheridancollege/fourothreeindustries/Sfn2Application.java
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

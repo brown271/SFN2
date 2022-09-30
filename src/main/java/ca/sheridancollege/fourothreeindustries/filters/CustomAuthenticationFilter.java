@@ -39,23 +39,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
-		String username = "";
+		String username = ""; //blank username and password
 		String password ="";
 		try {
-			//String test =  request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-			String test =  request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-			username = test.substring(13);
+			//Join all the headers into one string
+			String header =  request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+			//pull username and password from the string
+			username = header.substring(13);
 			username = username.substring(0,username.indexOf('"'));
-			password = test.substring(test.lastIndexOf(':')+2);
+			password = header.substring(header.lastIndexOf(':')+2);
 			password = password.substring(0,password.indexOf('"'));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			//catch any IOExceptions 
 			e.printStackTrace();
 		}
-		
-		System.out.println("username: " + username);
-		System.out.println("password: " + password);
-		System.out.println(authManager);
+		//try to authenticate the token
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username,password);
 		return authManager.authenticate(token);
 	}
@@ -63,14 +61,18 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
+		//get the User from the auth manager
 		Account user = (Account)auth.getPrincipal();
+		//temporary hashing algorithim
 		Algorithm algo = Algorithm.HMAC256("temp".getBytes());
+		//generate their JWT
 		String accessToken = JWT.create().withSubject(user.getUsername())
 				.withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
 				.withIssuer(request.getRequestURL().toString())
 				.withClaim("roles",user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
 				.sign(algo);
-		response.setHeader("token", accessToken);
+		//return their JWT
+		response.addHeader("Key", accessToken);
 	}
 	
 

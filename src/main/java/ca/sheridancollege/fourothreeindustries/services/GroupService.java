@@ -58,25 +58,32 @@ public class GroupService {
 		}
 	}
 	
+	//this class compiles all the errors and returns them at once instead of displaying them one at a time
+	//it does so by adding to the out variable when an improper parameter is found
 	public  boolean validateEmailGroup(EmailGroup eg) throws InputMismatchException{
 		boolean isValid = true;
 		String out =  "";
-		if (eg.getName() == null || eg.getName().length() < 5 || eg.getName().length()>30 ) {
+		//group name is null or not correct length
+		if (!isGroupNameValid(eg.getName())) {
 			out+="Name must be between 5 and 30 characters.";
 			isValid = false;
 		}
-		if (eg.getDescription() == null || eg.getDescription().length() < 10 || eg.getDescription().length()>100 ) {
+		//group description is null or not correct length
+		if (!isGroupDescriptionValid(eg.getDescription()) ) {
 			out+="Description must be between 10 and 100 characters.";
 			isValid = false;
 		}
-		if ((eg.getSpecialFriends() == null || eg.getSFNAccounts() == null )||(eg.getSpecialFriends().size() + eg.getSFNAccounts().size() )< 2) {
+		//special friends or sfaccounts are null or their group has less than 2 members
+		if (!isGroupAccountsAndSpecialFriendsValid(eg.getSFNAccounts(), eg.getSpecialFriends())) {
 			out+="There must be atleast 2 Special Freinds or SFN Accounts chosen.";
 			isValid = false;
 		}
-		if (eg.getRoles() == null|| eg.getRoles().size() <1) {
+		//missing roles 
+		if (!isGroupRolesValid(eg.getRoles())) {
 			out+="There must be atleast 1 permission selected.";
 			isValid = false;
 		}
+		//if valid, return true if not cast a inputmismatch with the message of all errors
 		if (isValid) {
 			return true;
 			}
@@ -85,77 +92,149 @@ public class GroupService {
 		}
 	}
 	
-	public EmailGroup parseJSONStringIntoEmailGroup(String eg) throws InputMismatchException{
-		List<Account> accounts = new ArrayList<Account>();
-		List<SpecialFriend> sFriends = new ArrayList<SpecialFriend>();
-		List<Role> roles = new ArrayList<Role>();
-		List<Long> idList = new ArrayList<Long>();
-		String cur = eg;
-		System.out.println(eg);
-		cur = eg.substring(eg.indexOf("\"id\"") + 6);
+	public boolean isGroupNameValid(String name) {
+		int minNameLength = 5; 
+		int maxNameLength = 30;
+		if(name == null) {
+			return false;
+		}
+		name = name.trim();
+		if(name.length() < minNameLength || name.length() > maxNameLength) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isGroupDescriptionValid(String description) {
+		int minNameLength = 10;
+		int maxNameLength = 100;
+		if(description == null) {
+			return false;
+		}
+		description = description.trim();
+		if(description.length() < minNameLength || description.length() > maxNameLength) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isGroupAccountsAndSpecialFriendsValid(List<Account> accounts, List<SpecialFriend> specialFriends) {
+		int minMembers = 2;
+		//if either are null, invalid group
+		if( specialFriends == null || accounts == null ) {
+			return false;
+		}
+		//need to be atleast minmembers between the two
+		if	((specialFriends.size() + accounts.size() )< minMembers) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isGroupRolesValid(List<Role> roles) {
+		int minRoleSize = 1;
+		if (roles == null) {
+			return false;
+		}
+		if (roles.size() < minRoleSize) {
+			return false;
+		}
+		return true;
+	}
+	
+	public Long parseJSONIntoEmailGroupId(String json) {
 		Long id = null;
-		if(cur.charAt(0) != 'u') {
-			id = Long.parseLong(cur.substring(0,cur.indexOf("\"")));
+		//6 is the size of the offset from word "id":" 
+		json = json.substring(json.indexOf("\"id\"") + 6);
+		//if our id isnt undefined
+		if(json.charAt(0) != 'u') {
+			id = Long.parseLong(json.substring(0,json.indexOf("\"")));
 		}
+		return id;
+	}
 	
-		System.out.println(id);
-		cur = eg.substring(eg.indexOf("\"description\"")+15);
-		String desc =  cur.substring(0,cur.indexOf("\""));
-		System.out.println(desc);
-		cur = eg.substring(eg.indexOf("\"name\"")+8);
-		System.out.println("Cur at Name " + cur);
-		String name = cur.substring(0,cur.indexOf("\""));
-		System.out.println("Name " + name);
-		eg = eg.substring(Math.max(eg.indexOf(name) + name.length() + 2, eg.indexOf(desc) + desc.length() + 2));
-		System.out.println(cur);
-		
-		cur = eg.substring(eg.indexOf("roles"));
-		
-		if (cur.indexOf("]") - cur.indexOf("[") > 2) {
-			while(cur.indexOf("id") < cur.indexOf("]") && cur.indexOf("id") != -1 ) {
-				cur = cur.substring(cur.indexOf("\"id\"")+6);
-				System.out.println(cur);
-				idList.add(Long.parseLong(cur.substring(0,cur.indexOf("\""))));
-			}
-			roles = rr.findAllById(idList);
-			idList.clear();
-			
-		}
-		cur = eg.substring(eg.indexOf("SFNAccounts"));
-		System.out.println("SFN Accounts");
-		System.out.println(cur);
-		cur = cur.replace("\"", "");
-		System.out.println(cur);
-		
-		if (cur.indexOf("]") - cur.indexOf("[") > 2) {
-			while(cur.indexOf("id") < cur.indexOf("]") && cur.indexOf("id") != -1 ) {
-				cur = cur.substring(cur.indexOf("id")+3);
-				System.out.println(cur);
-				idList.add(Long.parseLong(cur.substring(0,cur.indexOf("}"))));
-			}
-			accounts = acr.findAllById(idList);
-			idList.clear();
-			
-		}
-
-		cur = eg.substring(eg.indexOf("specialFriends"));
-		if (cur.indexOf("]") - cur.indexOf("[") > 2) {
-			while(cur.indexOf("id") < cur.indexOf("]") && cur.indexOf("id") != -1) {
-				cur = cur.substring(cur.indexOf("\"id\"")+6);
-				System.out.println(cur);
-				idList.add(Long.parseLong(cur.substring(0,cur.indexOf("\""))));
-			}
-			sFriends = sfr.findAllById(idList);
-			idList.clear();
-			
-		}
+	public String parseJSONIntoEmailGroupDescription(String json) {
+		String desc = "";
+		//15 is the size of the offset from word "description":" 
+		json = json.substring(json.indexOf("\"description\"")+15); 
+		desc =  json.substring(0,json.indexOf("\""));
+		return desc;
+	}
 	
-		
-		
-		EmailGroup emailGroup = new EmailGroup(id,name,desc,sFriends,accounts,roles);
-		for(Role r : roles) {
-			System.out.println(r);
+	public String parseJSONIntoEmailGroupName(String json) {
+		String name = "";
+		//8 is the size of the offset from word "name":" 
+		 json =  json.substring( json.indexOf("\"name\"")+8);
+		 name = json.substring(0,json.indexOf("\""));
+		 return name;
+	}
+	
+	public boolean isJSONValidSize(String json) {
+		if (json != null && json.length() > 0) {
+			return true;
 		}
+		return false;
+	}
+	
+	public List<Role> parseJSONIntoEmailGroupRoles(String json){
+		List<Role> roles = new ArrayList<Role>();
+		json = json.substring(json.indexOf("\"roles\""));
+		//while id is present in current block 
+		while(json.indexOf("id") < json.indexOf("]") && json.indexOf("id") != -1 ) {
+			//6 is the size of the offset from word "id":" 
+			json = json.substring(json.indexOf("\"id\"")+6);
+			Long id = Long.parseLong(json.substring(0,json.indexOf("\"")));
+			roles.add(rr.findById(id).get());
+			}
+		return roles;
+	}
+	
+	public List<Account> parseJSONIntoEmailGroupAccounts(String json){
+		List<Account> accounts = new ArrayList<Account>();
+		json = json.substring(json.indexOf("SFNAccounts"));
+		//due to a Java error, this json structure is sometimes ints and sometime strings
+		//we remove the possiblity and just delete all " to make it int based
+		json = json.replace("\"", "");
+		//while id is present in current block 
+		while(json.indexOf("id") < json.indexOf("]") && json.indexOf("id") != -1 ) {
+			//6 is the size of the offset from word id: 
+			json = json.substring(json.indexOf("id")+3);
+			//since its int, we have to use the end of the current object not the quote as a stop
+			Long id = Long.parseLong(json.substring(0,json.indexOf("}")));
+			accounts.add(acr.findById(id).get());
+		}
+		return accounts;
+	}
+	
+	public List<SpecialFriend> parseJSONIntoEmailGroupSpecialFriends(String json){
+		List<SpecialFriend> specialFriends = new ArrayList<SpecialFriend>();
+		json = json.substring(json.indexOf("specialFriends"));
+		//while id is present in current block 
+		while(json.indexOf("id") < json.indexOf("]") && json.indexOf("id") != -1) {
+			//6 is the size of the offset from word "id":" 
+			json = json.substring(json.indexOf("\"id\"")+6);
+			Long id = Long.parseLong(json.substring(0,json.indexOf("\"")));
+			specialFriends.add(sfr.findById(id).get());
+		}
+		return specialFriends;
+	}
+	
+	public EmailGroup parseJSONStringIntoEmailGroup(String json) throws InputMismatchException{
+		//return if our string is too short
+		if (!isJSONValidSize(json)) {
+			return null;
+		}
+		Long id = parseJSONIntoEmailGroupId(json);
+		String desc = parseJSONIntoEmailGroupDescription(json);
+		String name = parseJSONIntoEmailGroupName(json);
+		//move the JSON String ahead to the maximum,
+		//we get the max index between name and desc to find where the beginning Email Group structure ended
+		json = json.substring(Math.max(json.indexOf(name) + name.length() + 2, json.indexOf(desc) + desc.length() + 2));
+		List<Role> roles = parseJSONIntoEmailGroupRoles(json);
+		List<Account> accounts = parseJSONIntoEmailGroupAccounts(json);
+		List<SpecialFriend> specialFriends = parseJSONIntoEmailGroupSpecialFriends(json);
+		EmailGroup emailGroup = new EmailGroup(id,name,desc,specialFriends,accounts,roles);
+		
 		return emailGroup;
 	}
 }
