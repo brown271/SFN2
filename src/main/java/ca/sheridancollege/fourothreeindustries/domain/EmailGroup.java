@@ -49,11 +49,11 @@ public class EmailGroup {
 		String json =  "{\"id\":\"" + this.id + "\",\"name\":\"" + this.name + "\",\"description\":\""+ this.description + "\","
 				+ "\"SFNAccounts\":[ ";
 				for(Account a: SFNAccounts) {
-					json +=	a.JSONify() + ",";
+					json +=	a.simpleJSONify() + ",";
 				}
 				json = (json.substring(0,json.length()-1) + "],\"specialFriends\":[ ");
 				for(SpecialFriend sf: specialFriends) {
-					json +=	sf.JSONify() + ",";
+					json +=	sf.simpleJSONify() + ",";
 				}
 				json = (json.substring(0,json.length()-1) + "],\"roles\":[");
 				for(Role r: roles) {
@@ -63,6 +63,8 @@ public class EmailGroup {
 		
 		return json;
 	}
+	
+
 
 	@ManyToMany()
 	private List<Role> roles;

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.sheridancollege.fourothreeindustries.domain.Account;
-import ca.sheridancollege.fourothreeindustries.domain.EmailGroup;
 import ca.sheridancollege.fourothreeindustries.repos.AccountRepository;
 
 @RestController
@@ -32,7 +31,7 @@ public class AccountController {
 		Page<Account> yup = acr.findAll(pageRequest);
 		String json ="[";
 		for (Account eg: yup.toList()) {
-			json+= eg.JSONify() + ",";
+			json+= eg.simpleJSONify() + ",";
 		}
 		json = (json.substring(0,json.length()-1) + "]");
 		return json;

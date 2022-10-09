@@ -1,5 +1,8 @@
 package ca.sheridancollege.fourothreeindustries.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +32,38 @@ public class RoleController {
 		for(Role r: rs.getAllRoles()) {
 			out+="{\"id\":\"" + r.getId() + "\",\"roleName\":\"" + r.getRoleName() + "\"},";
 		}
-		out = (out.substring(0,out.length()-1) + "]");
+		if(out.length()> 1) {
+			out = (out.substring(0,out.length()-1) + "]");
+		}
+		else {
+			out = "[]";
+		}
+		
 		return out;
+	}
+	
+	@CrossOrigin()
+	@GetMapping("/editableRolesInSession")
+	public String getEditableRolesInMySession() {
+		List<Role> currentRoles = rs.findCurrentRoles();
+		List<Role> editableRoles = new ArrayList<Role>();
+		String out ="[";
+		for(Role currentRole: currentRoles) {
+			System.out.println("CURRENT ROLE" + currentRole);
+			for(Role editableRole: rs.findRolesMyRoleCanEdit(currentRole)) {
+				if(!editableRoles.contains(editableRole)) {
+					editableRoles.add(editableRole);
+					out+="{\"id\":\"" + editableRole.getId() + "\",\"roleName\":\"" + editableRole.getRoleName() + "\"},";
+				}
+			}
+		}
+		if(out.length()> 1) {
+			out = (out.substring(0,out.length()-1) + "]");
+		}
+		else {
+			out = "[]";
+		}
+		return out;
+		
 	}
 }

@@ -31,5 +31,15 @@ public class Volunteer {
 	@OneToOne
 	@JoinColumn
 	private Account account;
+	
+	public String JSONify() {
+		return "{\"id\":\"" + this.getId() + "\",\"hours\":\"" + this.getHours() +
+				"\", \"additionalInfo\":" + additionalInfo.JSONify() + ",\"account\":"
+				+ account.JSONify()  + "}";
+	}
+	public String simpleJSONify() {
+		return "{\"id\":\"" + this.getId() + "\",\"hours\":\"" + this.getHours() +
+				 ",\"account\":" + account.simpleJSONify()  + "}";
+	}
 }
 

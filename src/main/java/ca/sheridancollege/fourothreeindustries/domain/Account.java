@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @SuppressWarnings("serial")
 @Data
@@ -41,12 +44,12 @@ public class Account implements UserDetails{
 	private boolean isEnabled;
 	//private List<? extends GrantedAuthority> grantedAuthorities;
 	
-	@OneToOne
+	@OneToOne()
 	@JoinColumn
 	private PersonalInfo personalInfo;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Role> roles;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Role role;
 
 	@ManyToMany(mappedBy = "SFNAccounts")
 	List<EmailGroup> groups;
@@ -55,22 +58,21 @@ public class Account implements UserDetails{
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		for (Role role: roles) {
-			authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-		}
+		authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
 		return authorities;
 		
 	}
 	
 	public String JSONify() {
-		String json = "{\"id\":\"" + this.id + "\",\"username\":\"" + this.username + "\",\"email\":\"" + this.getPersonalInfo().getEmail() + "\",\"name\":\"" + (this.getPersonalInfo().getFirstName() + " " + this.getPersonalInfo().getLastName())  + "\","
-				+ "\"roles\":[";
-		for(Role r: roles) {
-			json +=	r.JSONify() + ",";
-		}
-		json = (json.substring(0,json.length()-1) + "]}");
+		String json = "{\"id\":\"" + this.id + "\",\"personalInfo\":" + this.getPersonalInfo().JSONify() 
+				+",\"role\":" + role.JSONify() +"}";
 		return json;
 		
+	}
+	
+	public String simpleJSONify() {
+		String json = "{\"id\":\"" + this.id + "\",\"personalInfo\":" + this.getPersonalInfo().simpleJSONify()  +",\"role\":" + role.JSONify() +"}";
+		return json;
 	}
 
 	@Override

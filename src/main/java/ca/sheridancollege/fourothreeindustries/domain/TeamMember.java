@@ -29,4 +29,14 @@ public class TeamMember {
 	@OneToOne
 	@JoinColumn
 	private Account account;
+	
+	public String JSONify() {
+		return "{\"id\":\"" + this.getId() + "\", \"additionalInfo\":" +
+				additionalInfo.JSONify() + ",\"account\":"+ account.JSONify()  + "}";
+	}
+	
+	public String simpleJSONify() {
+		return "{\"id\":\"" + this.getId() +  ",\"account\":" + account.simpleJSONify()  + "}";
+				
+	}
 }

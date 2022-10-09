@@ -1,5 +1,6 @@
 package ca.sheridancollege.fourothreeindustries.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +24,17 @@ public class Admin {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 		
-	@OneToOne
+	@OneToOne()
 	@JoinColumn
 	private Account account;
+	
+	public String JSONify() {
+		return "{\"id\":\"" + this.getId() + 
+				"\",\"account\":" + account.JSONify()+  "}";
+	}
+	
+	public String simpleJSONify() {
+		return "{\"id\":\"" + this.getId() + 
+				"\",\"account\":" + account.simpleJSONify()+  "}";
+	}
 }

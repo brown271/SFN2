@@ -5,4 +5,5 @@ import ca.sheridancollege.fourothreeindustries.domain.*;
 
 public interface TeamMemberRepository extends JpaRepository <TeamMember,Long>{
 
+	public TeamMember findByAccount(Account account);
 }

@@ -40,7 +40,15 @@ public class SpecialFriend {
 	private Boolean isBirthdayClubMember;
 	
 	public String JSONify() {
-		return "{\"id\":\"" + this.id + "\",\"email\":\"" + this.getPersonalInfo().getEmail() + "\",\"name\":\"" + (this.getPersonalInfo().getFirstName() + " " + this.getPersonalInfo().getLastName()) + "\"}";
+		return "{\"id\":\"" + this.id + "\",\"howToComfort\":\"" + howToComfort + "\",\"isCostAFactor\":" 
+				+isCostAFactor+ ",\"isBirthdayClubMember\":" + isBirthdayClubMember +
+				",\"personalInfo\":" + this.getPersonalInfo().JSONify() + 
+				",\"additionalInfo\":" +  additionalInfo.JSONify() +  "}";
+		
+	}
+	
+	public String simpleJSONify() {
+		return "{\"id\":\"" + this.id + "\",\"personalInfo\":" + this.getPersonalInfo().simpleJSONify() +  "}";
 		
 	}
 	

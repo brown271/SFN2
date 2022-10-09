@@ -72,8 +72,8 @@ public class BootstrapData implements CommandLineRunner{
 		Role admin = Role.builder().roleName("ADMIN").build();
 		Role tm = Role.builder().roleName("TEAM_MEMBER").build();
 		Role volunteer = Role.builder().roleName("VOLUNTEER").build();
-		Role sf = Role.builder().roleName("SPECIAL_FRIEND").build();
-		Role everyone = Role.builder().roleName("EVERYONE").build();
+	    Role sf = Role.builder().roleName("SPECIAL_FRIEND").build();
+		Role everyone = Role.builder().roleName("ANONYMOUS").build();
 		rgr.save(admin);
 		rgr.save(tm);
 		rgr.save(volunteer);
@@ -154,7 +154,7 @@ public class BootstrapData implements CommandLineRunner{
 			AdditionalInfo aI = AdditionalInfo.builder()
 					.additionalComments("Cool")
 					.allergies("Some Allergy")
-					.conditions("way too cool")
+					.specialNeeds("way too cool")
 					.emergencyContactName("Hospital")
 					.emergencyContactPhoneNumber("911")
 					.emergencyContactRelation("Tax Payer")
@@ -164,13 +164,12 @@ public class BootstrapData implements CommandLineRunner{
 					.needsToBeMet("Nothing")
 					.build();
 			pir.save(pI);
-			ArrayList<Role> roleList = new ArrayList<Role>();
-			roleList.add(rgr.findByRoleName("VOLUNTEER"));
+			Role role = rgr.findByRoleName("VOLUNTEER");
 			Account acc = Account.builder()
 					.password("1234")
 					.personalInfo(pI)
 					.username("volunteer")
-					.roles(roleList)
+					.role(role)
 					.build();
 			air.save(aI);
 			acr.save(acc);
@@ -211,7 +210,7 @@ public class BootstrapData implements CommandLineRunner{
 			AdditionalInfo aI = AdditionalInfo.builder()
 					.additionalComments("Cool")
 					.allergies("Some Allergy")
-					.conditions("way too cool")
+					.specialNeeds("way too cool")
 					.emergencyContactName("Hospital")
 					.emergencyContactPhoneNumber("911")
 					.emergencyContactRelation("Tax Payer")
@@ -221,13 +220,12 @@ public class BootstrapData implements CommandLineRunner{
 					.needsToBeMet("Nothing")
 					.build();
 			pir.save(pI);
-			ArrayList<Role> roleList = new ArrayList<Role>();
-			roleList.add(rgr.findByRoleName("TEAM_MEMBER"));
+			Role role = rgr.findByRoleName("TEAM_MEMBER");
 			Account acc = Account.builder()
 					.password("9999")
 					.username(firstNames.get(targFN).toLowerCase() + lastNames.get(targLN).substring(0,1).toLowerCase() + targFN + "-" + targLN)
 					.personalInfo(pI)
-					.roles(roleList)
+					.role(role)
 					.build();
 			air.save(aI);
 			acr.save(acc);
@@ -271,7 +269,7 @@ public class BootstrapData implements CommandLineRunner{
 			AdditionalInfo aI = AdditionalInfo.builder()
 					.additionalComments("Cool")
 					.allergies("Some Allergy")
-					.conditions("way too cool")
+					.specialNeeds("way too cool")
 					.emergencyContactName("Hospital")
 					.emergencyContactPhoneNumber("911")
 					.emergencyContactRelation("Tax Payer")
@@ -303,8 +301,7 @@ public class BootstrapData implements CommandLineRunner{
 	
 	public void make403Industries() {
 		
-		ArrayList<Role> roleList = new ArrayList<Role>();
-		roleList.add(rgr.findByRoleName("ADMIN"));
+		Role role = rgr.findByRoleName("ADMIN");
 		
 		PersonalInfo p1 = PersonalInfo.builder()
 				.birthDate(LocalDate.of(2001, 8, 30))
@@ -318,7 +315,7 @@ public class BootstrapData implements CommandLineRunner{
 				.password("adminLogin123")
 				.username("alex")
 				.personalInfo(p1)
-				.roles(roleList)
+				.role(role)
 				.build();
 		acr.save(acc1);
 		
@@ -340,7 +337,7 @@ public class BootstrapData implements CommandLineRunner{
 				.password("adminLogin123")
 				.personalInfo(p2)
 				.username("varun")
-				.roles(roleList)
+				.role(role)
 				.build();
 		acr.save(acc2);
 		Admin ad2 = Admin.builder()
@@ -361,7 +358,7 @@ public class BootstrapData implements CommandLineRunner{
 				.password("adminLogin123")
 				.personalInfo(p3)
 				.username("brad")
-				.roles(roleList)
+				.role(role)
 				.build();
 		acr.save(acc3);
 		
@@ -386,7 +383,7 @@ public class BootstrapData implements CommandLineRunner{
 				.password("adminLogin123")
 				.username("gene")
 				.personalInfo(p4)
-				.roles(roleList)
+				.role(role)
 				.build();
 		acr.save(acc4);
 		
@@ -395,7 +392,8 @@ public class BootstrapData implements CommandLineRunner{
 				.build();
 		adr.save(ad4);
 		
-		
+		List<Role> roleList = new ArrayList<Role>();
+		roleList.add(role);
 		//sfr.save(s2);
 		EmailGroup eg = EmailGroup.builder()
 				.description("The best of the best")

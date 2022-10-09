@@ -94,8 +94,9 @@ public class GroupController {
 	@PutMapping("/update")
 	public String updateEmailGroup(@RequestBody String eg) {
 		//Java cannot parse the object so we have to do it manually
+
 		EmailGroup emailGroup = gs.parseJSONStringIntoEmailGroup(eg);
-		
+
 		//update the email group after
 		try {
 			gs.validateEmailGroup(emailGroup);

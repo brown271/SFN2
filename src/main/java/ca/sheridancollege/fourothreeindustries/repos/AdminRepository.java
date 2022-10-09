@@ -5,4 +5,5 @@ import ca.sheridancollege.fourothreeindustries.domain.*;
 
 public interface AdminRepository extends JpaRepository <Admin ,Long>{
 
+	public Admin findByAccount(Account account);
 }

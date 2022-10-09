@@ -19,18 +19,18 @@ import ca.sheridancollege.fourothreeindustries.repos.SpecialFriendRepository;
 public class GroupService {
 	
 	@Autowired
-	private EmailGroupRepository egr;
+	private EmailGroupRepository emailGroupRepo;
 	@Autowired
-	private AccountRepository acr;
+	private AccountRepository accountRepo;
 	@Autowired
-	private SpecialFriendRepository sfr;
+	private SpecialFriendRepository specialFriendRepo;
 	@Autowired
-	private RoleRepository rr;
+	private RoleRepository roleRepo;
 	
 	public EmailGroup addGroup(EmailGroup eg){
 		try {
 			validateEmailGroup(eg);
-			eg = egr.save(eg);
+			eg = emailGroupRepo.save(eg);
 			return eg;
 		}catch(InputMismatchException e) {
 			return new EmailGroup(null,null,e.getMessage(),null,null,null);
@@ -38,8 +38,8 @@ public class GroupService {
 	}
 	
 	public  void deleteEmailGroupById(Long id) {
-		if (egr.findById(id).get() != null) {
-			 egr.deleteById(id);
+		if (emailGroupRepo.findById(id).get() != null) {
+			emailGroupRepo.deleteById(id);
 			 
 		}
 		
@@ -51,7 +51,7 @@ public class GroupService {
 			if (eg.getId() == null) {
 				return new EmailGroup(null,null,"Email Group Missing ID. Can't update.",null,null,null);
 			}
-			eg = egr.save(eg);
+			eg = emailGroupRepo.save(eg);
 			return eg;
 		}catch(InputMismatchException e) {
 			return new EmailGroup(null,null,e.getMessage(),null,null,null);
@@ -184,7 +184,7 @@ public class GroupService {
 			//6 is the size of the offset from word "id":" 
 			json = json.substring(json.indexOf("\"id\"")+6);
 			Long id = Long.parseLong(json.substring(0,json.indexOf("\"")));
-			roles.add(rr.findById(id).get());
+			roles.add(roleRepo.findById(id).get());
 			}
 		return roles;
 	}
@@ -192,16 +192,12 @@ public class GroupService {
 	public List<Account> parseJSONIntoEmailGroupAccounts(String json){
 		List<Account> accounts = new ArrayList<Account>();
 		json = json.substring(json.indexOf("SFNAccounts"));
-		//due to a Java error, this json structure is sometimes ints and sometime strings
-		//we remove the possiblity and just delete all " to make it int based
 		json = json.replace("\"", "");
-		//while id is present in current block 
+		System.out.println(json);
 		while(json.indexOf("id") < json.indexOf("]") && json.indexOf("id") != -1 ) {
-			//6 is the size of the offset from word id: 
 			json = json.substring(json.indexOf("id")+3);
-			//since its int, we have to use the end of the current object not the quote as a stop
 			Long id = Long.parseLong(json.substring(0,json.indexOf("}")));
-			accounts.add(acr.findById(id).get());
+			accounts.add(accountRepo.findById(id).get());
 		}
 		return accounts;
 	}
@@ -209,12 +205,11 @@ public class GroupService {
 	public List<SpecialFriend> parseJSONIntoEmailGroupSpecialFriends(String json){
 		List<SpecialFriend> specialFriends = new ArrayList<SpecialFriend>();
 		json = json.substring(json.indexOf("specialFriends"));
-		//while id is present in current block 
+		json = json.replace("\"", "");
 		while(json.indexOf("id") < json.indexOf("]") && json.indexOf("id") != -1) {
-			//6 is the size of the offset from word "id":" 
-			json = json.substring(json.indexOf("\"id\"")+6);
-			Long id = Long.parseLong(json.substring(0,json.indexOf("\"")));
-			specialFriends.add(sfr.findById(id).get());
+			json = json.substring(json.indexOf("id")+3);
+			Long id = Long.parseLong(json.substring(0,json.indexOf("}")));
+			specialFriends.add(specialFriendRepo.findById(id).get());
 		}
 		return specialFriends;
 	}
@@ -236,5 +231,41 @@ public class GroupService {
 		EmailGroup emailGroup = new EmailGroup(id,name,desc,specialFriends,accounts,roles);
 		
 		return emailGroup;
+	}
+	
+	public void wipeAccountFromAllEmailGroups(Account account) {
+		if (account == null) {
+			return;
+		}
+		Long id = account.getId();
+		for(EmailGroup eg: emailGroupRepo.findAllBySFNAccounts_Id(id)) {
+			List<Account> accounts = eg.getSFNAccounts();
+			List<Account> newAccounts = new ArrayList<Account>();
+			for(Account acc: accounts) {
+				if(acc.getId() != id) {
+					newAccounts.add(acc);
+				}
+			}
+			eg.setSFNAccounts(newAccounts);
+			emailGroupRepo.save(eg);
+		}
+	}
+	
+	public void wipeSpecialFriendFromAllEmailGroups(SpecialFriend specialFriend) {
+		if (specialFriend == null) {
+			return;
+		}
+		Long id = specialFriend.getId();
+		for(EmailGroup eg: emailGroupRepo.findAllBySpecialFriends_Id(id)) {
+			List<SpecialFriend> friends = eg.getSpecialFriends();
+			List<SpecialFriend> newFriends = new ArrayList<SpecialFriend>();
+			for(SpecialFriend friend: friends) {
+				if(friend.getId() != id) {
+					newFriends.add(friend);
+				}
+			}
+			eg.setSpecialFriends(newFriends);
+			emailGroupRepo.save(eg);
+		}
 	}
 }

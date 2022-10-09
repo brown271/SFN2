@@ -13,4 +13,6 @@ public interface EmailGroupRepository extends JpaRepository <EmailGroup, Long>{
 	
 	public List<EmailGroup> findAllByRoles(Role role, Pageable page);
 	public List<EmailGroup> findAllByName(String Name, Pageable page);
+	public List<EmailGroup> findAllBySFNAccounts_Id(Long id);
+	public List<EmailGroup> findAllBySpecialFriends_Id(Long id);
 }
