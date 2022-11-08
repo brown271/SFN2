@@ -29,17 +29,20 @@ public class RoleService {
 	}
 	
 	public List<Role> findRolesMyRoleCanEdit(Role role){
+		System.out.println("ROLE");
 		System.out.println(role);
 		if (role == null || role.getRoleName() == "ANONYMOUS") {
 			return null;
 		}
 		List<Role> roles = new ArrayList<Role>();
-		roles.add(roleRepo.findByRoleName("VOLUNTEER"));
-		roles.add(roleRepo.findByRoleName("SPECIAL_FRIEND"));
-		if (role.getRoleName() == "TEAM_MEMBER" || role.getRoleName() == "ADMIN" ) {
+		if(role.getRoleName().equals("VOLUNTEER") || role.getRoleName().equals("TEAM_MEMBER")  || role.getRoleName().equals("ADMIN") ) {
+			roles.add(roleRepo.findByRoleName("VOLUNTEER"));
+			roles.add(roleRepo.findByRoleName("SPECIAL_FRIEND"));
+		}
+		if (role.getRoleName().equals("TEAM_MEMBER")  || role.getRoleName().equals("ADMIN")) {
 			roles.add(roleRepo.findByRoleName("TEAM_MEMBER"));
 		}
-		if(role.getRoleName() == "ADMIN") {
+		if(role.getRoleName().equals("ADMIN")) {
 			roles.add(roleRepo.findByRoleName("ADMIN"));
 		}
 		return roles;

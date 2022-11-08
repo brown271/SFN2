@@ -23,7 +23,6 @@ public class AccountController {
 	
 	@CrossOrigin()
 	@GetMapping("/page/{page}")
-	//@PreAuthorize("hasAuthority('ADMIN')")
 	public String getEmailGroups(@PathVariable Long page) {
 		System.out.println("Page Request For page " + page);
 		Pageable pageRequest = PageRequest.of(page.intValue(), pageSize);

@@ -89,6 +89,6 @@ public class TeamMemberController {
 			return "{\"message\":\"" + e.getMessage() + "\",\"status\":500}";
 		}
 		String name = teamMember.getAccount().getPersonalInfo().getFirstName() + " " + teamMember.getAccount().getPersonalInfo().getLastName();
-		return "{\"message\":\"Successfully Created " + name + "!\",\"status\":200}";
+		return "{\"message\":\"Successfully Edited " + name + "!\",\"status\":200}";
 	}
 }

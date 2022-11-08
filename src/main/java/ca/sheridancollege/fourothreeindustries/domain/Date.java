@@ -1,5 +1,6 @@
 package ca.sheridancollege.fourothreeindustries.domain;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DateEvents {
+public class Date {
 
-	private int Date;
+	private LocalDate date;
 	private List<Event> events;
 }

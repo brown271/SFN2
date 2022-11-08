@@ -3,6 +3,7 @@ package ca.sheridancollege.fourothreeindustries.bootstrap;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,24 +42,25 @@ public class BootstrapData implements CommandLineRunner{
 	private EventRepository er;
 	
 
-	
+	/*
 	private List<String> firstNames = populateListFromFile("firstNames.txt");
 	private List<String> lastNames = populateListFromFile("lastNames.txt");
 	private List<String> groupNames = populateListFromFile("groups.txt");
+	*/
+	
 	
 	@Override
 	public void run(String... args) throws Exception {
 	
-		
-		
-		Event e1 = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday").build();
-		Event e1a = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 2").build();
-		Event e1b = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 3").build();
-		Event e1c = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 4").build();
-		Event e2 = Event.builder().date(LocalDate.of(2022, 2, 15)).name("Gen Birthday").build();
-		Event e3 = Event.builder().date(LocalDate.of(2022, 5, 27)).name("Brad Birthday").build();
-		Event e4 = Event.builder().date(LocalDate.of(2022, 8, 30)).name("Alex Birthday").build();
-		Event e5 = Event.builder().date(LocalDate.of(2022, 12, 25)).name("Christman").build();
+		/*
+		Event e1 = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday").description("HAPPY BIRTHDAY VARUN!").linkToEvent("https://drive.google.com/file/d/1in54KzliXiqL0IHy15fSE4myvRgR4Kh5/view?usp=share_link").isOnline(true).time(LocalTime.NOON).build();
+		Event e1a = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 2").description("HAPPY BIRTHDAY VARUN!").linkToEvent("https://drive.google.com/file/d/1in54KzliXiqL0IHy15fSE4myvRgR4Kh5/view?usp=share_link").isOnline(true).time(LocalTime.NOON).build();
+		Event e1b = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 3").description("HAPPY BIRTHDAY VARUN!").linkToEvent("https://drive.google.com/file/d/1in54KzliXiqL0IHy15fSE4myvRgR4Kh5/view?usp=share_link").isOnline(true).time(LocalTime.NOON).build();
+		Event e1c = Event.builder().date(LocalDate.of(2022, 2, 20)).name("Dali Birthday 4").description("HAPPY BIRTHDAY VARUN!").linkToEvent("https://drive.google.com/file/d/1in54KzliXiqL0IHy15fSE4myvRgR4Kh5/view?usp=share_link").isOnline(true).time(LocalTime.NOON).build();
+		Event e2 = Event.builder().date(LocalDate.of(2022, 2, 15)).name("Gen Birthday").description("HAPPY BIRTHDAY GEN!").linkToEvent("https://drive.google.com/file/d/1cr6ghmiQ_pSSyBPseLHYjNDiuJcNGm1X/view?usp=share_link").isOnline(true).time(LocalTime.NOON).build();
+		Event e3 = Event.builder().date(LocalDate.of(2022, 5, 27)).name("Brad Birthday").description("HAPPY BIRTHDAY BRAD!").linkToEvent("https://drive.google.com/file/d/1VaOnAJpjYPSwa-jbDMlInDmsPm93R5R0/view?usp=share_link").isOnline(true).time(LocalTime.NOON).build();
+		Event e4 = Event.builder().date(LocalDate.of(2022, 8, 30)).name("Alex Birthday").description("HAPPY BIRTHDAY ALEX!").linkToEvent("https://drive.google.com/file/d/1bc5W3ec6Lfdm1yxc7HEYOouMKavoo6Qp/view?usp=share_link").isOnline(true).time(LocalTime.NOON).build();
+		Event e5 = Event.builder().date(LocalDate.of(2022, 12, 25)).name("Christmas").description("HAPPY BIRTHDAY JESUS!").linkToEvent("https://www.youtube.com/watch?v=s9PzYuVwCSE").isOnline(true).time(LocalTime.NOON).build();
 		
 		er.save(e1);
 		er.save(e1a);
@@ -93,10 +95,10 @@ public class BootstrapData implements CommandLineRunner{
 			makeGroups(groupNames.size()/2,savedVs,savedSFs);
 		}
 		
-		
+		*/
 		
 	}
-	
+	/*
 	public List<EmailGroup> makeGroups(int num, List<Volunteer> volunteers, List<SpecialFriend> specialFriends){
 		List<EmailGroup> groups = new ArrayList<EmailGroup>();
 		for (int i = 0; i < num; i++) {
@@ -166,9 +168,9 @@ public class BootstrapData implements CommandLineRunner{
 			pir.save(pI);
 			Role role = rgr.findByRoleName("VOLUNTEER");
 			Account acc = Account.builder()
-					.password("1234")
+					.password("adminPassword123?")
 					.personalInfo(pI)
-					.username("volunteer")
+					.username("volunteerLogin?")
 					.role(role)
 					.build();
 			air.save(aI);
@@ -264,7 +266,7 @@ public class BootstrapData implements CommandLineRunner{
 					.email(firstNames.get(targFN).toLowerCase() + lastNames.get(targLN).substring(0,1).toLowerCase() + "@gmail.com")
 					.firstName(firstNames.get(targFN))
 					.lastName(lastNames.get(targLN))
-					.phoneNumber("too lazy to check")
+					.phoneNumber("647-504-5876")
 					.build();
 			AdditionalInfo aI = AdditionalInfo.builder()
 					.additionalComments("Cool")
@@ -312,8 +314,8 @@ public class BootstrapData implements CommandLineRunner{
 				.build();
 		pir.save(p1);
 		Account acc1 = Account.builder()
-				.password("adminLogin123")
-				.username("alex")
+				.password("adminLogin123?")
+				.username("alexLogin")
 				.personalInfo(p1)
 				.role(role)
 				.build();
@@ -330,13 +332,13 @@ public class BootstrapData implements CommandLineRunner{
 				.email("varunvadali1@gmail.com")
 				.firstName("Varun")
 				.lastName("Vadali")
-				.phoneNumber("too lazy to check")
+				.phoneNumber("647-504-5876")
 				.build();
 		pir.save(p2);
 		Account acc2 = Account.builder()
-				.password("adminLogin123")
+				.password("adminLogin123?")
 				.personalInfo(p2)
-				.username("varun")
+				.username("varunLogin")
 				.role(role)
 				.build();
 		acr.save(acc2);
@@ -351,13 +353,13 @@ public class BootstrapData implements CommandLineRunner{
 				.email("bradmonster96@gmail.com")
 				.firstName("Bradley")
 				.lastName("Persaud")
-				.phoneNumber("too lazy to check")
+				.phoneNumber("647-504-5876")
 				.build();
 		pir.save(p3);
 		Account acc3 = Account.builder()
-				.password("adminLogin123")
+				.password("adminLogin123?")
 				.personalInfo(p3)
-				.username("brad")
+				.username("bradLogin")
 				.role(role)
 				.build();
 		acr.save(acc3);
@@ -380,8 +382,8 @@ public class BootstrapData implements CommandLineRunner{
 		
 		pir.save(p4);
 		Account acc4 = Account.builder()
-				.password("adminLogin123")
-				.username("gene")
+				.password("adminLogin123?")
+				.username("geneLogin")
 				.personalInfo(p4)
 				.role(role)
 				.build();
@@ -430,5 +432,5 @@ public class BootstrapData implements CommandLineRunner{
 		
 		return list;
 	}
-
+*/
 }

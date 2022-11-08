@@ -106,6 +106,6 @@ public class AdminController {
 			return "{\"message\":\"" + e.getMessage() + "\",\"status\":500}";
 		}
 		String name = admin.getAccount().getPersonalInfo().getFirstName() + " " + admin.getAccount().getPersonalInfo().getLastName();
-		return "{\"message\":\"Successfully Created " + name + "!\",\"status\":200}";
+		return "{\"message\":\"Successfully Edited " + name + "!\",\"status\":200}";
 	}
 }

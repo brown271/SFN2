@@ -10,4 +10,5 @@ import ca.sheridancollege.fourothreeindustries.domain.Event;
 
 public interface EventRepository extends JpaRepository< Event, Long>{
 	public List<Event> findByDate(LocalDate date);
+	public List<Event> findAllByNameContainsIgnoreCase(String name);
 }

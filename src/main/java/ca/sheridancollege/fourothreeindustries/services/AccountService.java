@@ -23,10 +23,10 @@ public class AccountService implements UserDetailsService{
 	@Autowired
 	private RoleRepository roleRepo;
 	
-	private int minUsernameLength = 1;
+	private int minUsernameLength = 5;
 	private int maxUsernameLength = 30;
 	private int minPasswordLength = 8;
-	private String passwordRegex = "";
+	private String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 
 	
 	
@@ -74,7 +74,7 @@ public class AccountService implements UserDetailsService{
 			out+="Error: username must be unique, " + account.getUsername() + " is already taken.";
 		}
 		if (!isPasswordValid(account.getPassword())) {
-			out+="Error: password must be atelast "  + minPasswordLength + " and contain.";
+			out+="Error: password must be atelast "  + minPasswordLength + " and contain 1 uppercase, 1 lowercase, 1 number and 1 special character.";
 		}
 		try {
 			personalInfoService.isPersonalInfoValid(account.getPersonalInfo());
@@ -96,7 +96,7 @@ public class AccountService implements UserDetailsService{
 		if(username == null) {
 			return false;
 		}
-		username = username.trim();
+		username = username.replace(" ", "");
 		if(username.length() > maxUsernameLength || username.length() < minUsernameLength) {
 			return false;
 		}
@@ -107,6 +107,7 @@ public class AccountService implements UserDetailsService{
 		if (username == null) {
 			return false;
 		}
+		username = username.replace(" ", "");
 		if(accountRepo.findByUsernameLike(username).size()>0) {
 			return false;
 		}
@@ -117,8 +118,11 @@ public class AccountService implements UserDetailsService{
 		if(password == null) {
 			return false;
 		}
-		password = password.trim();
+		password = password.replace(" ", "");
 		if( password.length() < minPasswordLength) {
+			return false;
+		}
+		if(!password.matches(passwordRegex)) {
 			return false;
 		}
 		return true;

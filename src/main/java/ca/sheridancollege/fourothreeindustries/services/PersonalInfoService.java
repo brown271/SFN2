@@ -17,9 +17,9 @@ import ca.sheridancollege.fourothreeindustries.repos.SpecialFriendRepository;
 public class PersonalInfoService {
 
 	
-	private int minFirstNameLength = 1;
+	private int minFirstNameLength = 2;
 	private int maxFirstNameLength = 20;
-	private int minLastNameLength = 1;
+	private int minLastNameLength = 2;
 	private int maxLastNameLength = 40;
 	private int phoneNumberLength = 10;
 	

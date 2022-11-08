@@ -47,9 +47,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		   
 		//security
 		http.csrf().disable();
+		http.logout(logout -> logout.logoutUrl("/api/test/logout").logoutSuccessUrl("/"));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().antMatchers("/api/test/login").permitAll();
-		http.authorizeRequests().antMatchers("/api/test/conn").hasAuthority("ADMIN");
+		http.authorizeRequests().antMatchers("/api/role/**","/api/acc/**", "/api/admin/**", "/api/email/**",
+				"/api/group/**","/api/pi/**", "/api/role/**", "/api/sf/**", "/api/tm/**", "/api/volunteer/**","/api/test/").hasAnyAuthority("ADMIN","VOLUNTEER","TEAM_MEMBER");
+		http.authorizeRequests().antMatchers("/api/cal/**").permitAll();
 		CustomAuthenticationFilter filter = 
 				new CustomAuthenticationFilter(authenticationManagerBean());
 		filter.setFilterProcessesUrl("/api/test/login");
