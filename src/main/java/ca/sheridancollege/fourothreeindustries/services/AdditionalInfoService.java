@@ -20,13 +20,13 @@ public class AdditionalInfoService {
 	public boolean isAdditionalInfoValid(AdditionalInfo additionalInfo) throws InputMismatchException{
 		String out ="";
 		if(!isEmergencyContactNameValid(additionalInfo.getEmergencyContactName())) {
-			out+="Error: Emergency contact namme must be between " + minContactNameLength + " and " + maxContactNameLength + " characters long.";
+			out+="Error: Emergency contact namme must be between " + minContactNameLength + " and " + maxContactNameLength + " characters long;";
 		}
 		if(!isEmergencyContactPhoneNumberValid(additionalInfo.getEmergencyContactPhoneNumber())) {
-			out+="Error: Emergency contact phone number must contain " + phoneNumberLength + " numerical deigits."; 
+			out+="Error: Emergency contact phone number must contain " + phoneNumberLength + " numerical deigits;"; 
 		}
 		if(!isEmergencyContactRelationValid(additionalInfo.getEmergencyContactRelation())) {
-			out+="Error: Emergency contact relation must be between " + minContactRelationLength + " and " + maxContactRelationLength + " characters long.";
+			out+="Error: Emergency contact relation must be between " + minContactRelationLength + " and " + maxContactRelationLength + " characters long;";
 		}
 		
 		if(out.length()>0) {

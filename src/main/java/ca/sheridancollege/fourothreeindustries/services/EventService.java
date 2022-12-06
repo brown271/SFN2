@@ -71,23 +71,23 @@ public class EventService {
 	public boolean isEventValid(Event event) throws InputMismatchException {
 		String out ="";
 		if (!isEventDateValid(event.getDate())) {
-			out+="Event date must be after today.";
+			out+="Event date must be after today;";
 		}
 		if (!isEventNameValid(event.getName())) {
-			out+="Event name must be between " + minNameLength + " and " + maxNameLength + " characters long.";
+			out+="Event name must be between " + minNameLength + " and " + maxNameLength + " characters long;";
 		}
 		if (!isEventTimeValid(event.getTime())) {
-			out+="Event must have a time.";
+			out+="Event must have a time;";
 		}
 		
 		if(event.getIsOnline()) {
 			if(!isEventLinkValid(event.getLinkToEvent())) {
-				out +="Event link must be between " + minLinkLength + " and " + maxLinkLength + " characters long.";
+				out +="Event link must be between " + minLinkLength + " and " + maxLinkLength + " characters long;";
 			}
 		}
 		else {
 			if(!isEventAddressValid(event.getAddress())) {
-				out +="Event address must be between " + minAddressLength + " and " + maxAddressLength + " characters long.";
+				out +="Event address must be between " + minAddressLength + " and " + maxAddressLength + " characters long;";
 			}
 		}
 		

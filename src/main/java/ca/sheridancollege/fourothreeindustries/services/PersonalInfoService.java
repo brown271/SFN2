@@ -11,10 +11,14 @@ import ca.sheridancollege.fourothreeindustries.domain.Account;
 import ca.sheridancollege.fourothreeindustries.domain.PersonalInfo;
 import ca.sheridancollege.fourothreeindustries.domain.SpecialFriend;
 import ca.sheridancollege.fourothreeindustries.repos.AccountRepository;
+import ca.sheridancollege.fourothreeindustries.repos.PersonalInfoRepository;
 import ca.sheridancollege.fourothreeindustries.repos.SpecialFriendRepository;
 
 @Service
 public class PersonalInfoService {
+	
+	@Autowired
+	private PersonalInfoRepository personalInfoRepo;
 
 	
 	private int minFirstNameLength = 2;
@@ -62,19 +66,24 @@ public class PersonalInfoService {
 	public boolean isPersonalInfoValid(PersonalInfo personalInfo) {
 		String out = "";
 		if(!isFirstNameValid(personalInfo.getFirstName())) {
-			out+="Error: firstname must be between "+  minFirstNameLength + " and " + maxFirstNameLength +" characters. ";
+			out+="Error: firstname must be between "+  minFirstNameLength + " and " + maxFirstNameLength +" characters; ";
 		}
 		if(!isLastNameValid(personalInfo.getLastName())) {
-			out+="Error: lastname must be between "+  minLastNameLength + " and " + maxLastNameLength +" characters. ";
+			out+="Error: lastname must be between "+  minLastNameLength + " and " + maxLastNameLength +" characters; ";
 		}
 		if(!isBirthDateValid(personalInfo.getBirthDate())) {
-			out+="Error: must have a valid Birthdate.";
+			out+="Error: must have a valid Birthdate;";
 		}
 		if(!isPhoneNumberValid(personalInfo.getPhoneNumber())) {
-			out+="Error: phone number must consist of "+ phoneNumberLength + "  numerical characters.";
+			out+="Error: phone number must consist of "+ phoneNumberLength + "  numerical characters;";
+		}
+		if(personalInfo.getId() != null) {
+			if(!isEmailUnique(personalInfo.getEmail())) {
+				out+="Error: the email address "+ personalInfo.getEmail() + "  is already assigned to an account;";
+			}
 		}
 		if(!isEmailValid(personalInfo.getEmail())) {
-			out+="Error: must have a valid email address.";
+			out+="Error: must have a valid email address;";
 		}
 		
 		if(out.length()>0) {
@@ -89,6 +98,17 @@ public class PersonalInfoService {
 		}
 		firstName = firstName.trim();
 		if(firstName.length() > maxFirstNameLength || firstName.length() < minFirstNameLength) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isEmailUnique(String email) {
+		if(email == null) {
+			return false;
+		}
+		email = email.trim();
+		if(personalInfoRepo.findByEmailContainsIgnoreCase(email).size()>0) {
 			return false;
 		}
 		return true;

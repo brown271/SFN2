@@ -65,22 +65,22 @@ public class GroupService {
 		String out =  "";
 		//group name is null or not correct length
 		if (!isGroupNameValid(eg.getName())) {
-			out+="Name must be between 5 and 30 characters.";
+			out+="Name must be between 5 and 30 characters;";
 			isValid = false;
 		}
 		//group description is null or not correct length
 		if (!isGroupDescriptionValid(eg.getDescription()) ) {
-			out+="Description must be between 10 and 100 characters.";
+			out+="Description must be between 10 and 100 characters;";
 			isValid = false;
 		}
 		//special friends or sfaccounts are null or their group has less than 2 members
 		if (!isGroupAccountsAndSpecialFriendsValid(eg.getSFNAccounts(), eg.getSpecialFriends())) {
-			out+="There must be atleast 2 Special Freinds or SFN Accounts chosen.";
+			out+="There must be atleast 2 Special Freinds or SFN Accounts chosen;";
 			isValid = false;
 		}
 		//missing roles 
 		if (!isGroupRolesValid(eg.getRoles())) {
-			out+="There must be atleast 1 permission selected.";
+			out+="There must be atleast 1 permission selected;";
 			isValid = false;
 		}
 		//if valid, return true if not cast a inputmismatch with the message of all errors

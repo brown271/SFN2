@@ -36,14 +36,15 @@ public class RoleService {
 		}
 		List<Role> roles = new ArrayList<Role>();
 		if(role.getRoleName().equals("VOLUNTEER") || role.getRoleName().equals("TEAM_MEMBER")  || role.getRoleName().equals("ADMIN") ) {
-			roles.add(roleRepo.findByRoleName("VOLUNTEER"));
 			roles.add(roleRepo.findByRoleName("SPECIAL_FRIEND"));
 		}
 		if (role.getRoleName().equals("TEAM_MEMBER")  || role.getRoleName().equals("ADMIN")) {
-			roles.add(roleRepo.findByRoleName("TEAM_MEMBER"));
+			roles.add(roleRepo.findByRoleName("VOLUNTEER"));
+
 		}
 		if(role.getRoleName().equals("ADMIN")) {
 			roles.add(roleRepo.findByRoleName("ADMIN"));
+			roles.add(roleRepo.findByRoleName("TEAM_MEMBER"));
 		}
 		return roles;
 	}

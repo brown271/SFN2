@@ -30,6 +30,8 @@ public class EmailController {
 	private EmailGroupRepository egr;
 	private int pageSize =  5;
 	@Autowired
+	private EmailService emailService;
+	@Autowired
 	private JavaMailSender jms;
 
 	@CrossOrigin()
@@ -70,7 +72,7 @@ public class EmailController {
 		}
 		emailInfo.remove(emailInfo.size()-1);
 		emailInfo.remove(emailInfo.size()-1);
-		//emailer.sendEmail(jms, emailInfo, body, subject);
+		EmailService.sendEmail(jms, emailInfo, body, subject);
 		return "";
 	}
 }

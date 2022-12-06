@@ -37,7 +37,7 @@ public  class EmailService { //VERSION - 2: DOUBLE EMAIL FIXED!
 		if (subject.length() <=0 || subject.length() > 80) {
 			
 			throw new Exception("Error: Subject must be greater "
-					+ "than 0 characters and less than 80.");
+					+ "than 0 characters and less than 80;");
 		}
 		return subject;
 	}
@@ -47,7 +47,7 @@ public  class EmailService { //VERSION - 2: DOUBLE EMAIL FIXED!
 		if (body.length() <=0 || body.length() > 5000) {
 			
 			throw new Exception("Error: Body must be greater "
-					+ "than 0 characters and less than 5000.");
+					+ "than 0 characters and less than 5000;");
 		}
 		return body;
 	}

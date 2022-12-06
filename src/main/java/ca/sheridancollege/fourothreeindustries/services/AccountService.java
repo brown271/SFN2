@@ -45,10 +45,10 @@ public class AccountService implements UserDetailsService{
 	public boolean isCurrentAccountValid(Account account) {
 		String out = "";
 		if(!isUsernameValidSize(account.getUsername())) {
-			out+="Error: username must be between " + minUsernameLength + " and " + maxUsernameLength + " characters.";
+			out+="Error: username must be between " + minUsernameLength + " and " + maxUsernameLength + " characters;";
 		}
 		if (!isPasswordValid(account.getPassword())) {
-			out+="Error: password must be atelast "  + minPasswordLength + " and contain.";
+			out+="Error: password must be atelast "  + minPasswordLength + " and contain;";
 		}
 		try {
 			personalInfoService.isPersonalInfoValid(account.getPersonalInfo());
@@ -56,7 +56,7 @@ public class AccountService implements UserDetailsService{
 			out+=e.getMessage();
 		}
 		if(!isAccountRoleValid(account.getRole())) {
-			out+="Error: user must have a role.";
+			out+="Error: user must have a role;";
 			
 		}
 		if(out.length()>0) {
@@ -68,13 +68,13 @@ public class AccountService implements UserDetailsService{
 	public boolean isNewAccountValid(Account account) {
 		String out = "";
 		if(!isUsernameValidSize(account.getUsername())) {
-			out+="Error: username must be between " + minUsernameLength + " and " + maxUsernameLength + " characters.";
+			out+="Error: username must be between " + minUsernameLength + " and " + maxUsernameLength + " characters;";
 		}
 		if(!isUsernameUnique(account.getUsername())) {
-			out+="Error: username must be unique, " + account.getUsername() + " is already taken.";
+			out+="Error: username must be unique, " + account.getUsername() + " is already taken;";
 		}
 		if (!isPasswordValid(account.getPassword())) {
-			out+="Error: password must be atelast "  + minPasswordLength + " and contain 1 uppercase, 1 lowercase, 1 number and 1 special character.";
+			out+="Error: password must be atelast "  + minPasswordLength + " and contain 1 uppercase, 1 lowercase, 1 number and 1 special character;";
 		}
 		try {
 			personalInfoService.isPersonalInfoValid(account.getPersonalInfo());
@@ -82,7 +82,7 @@ public class AccountService implements UserDetailsService{
 			out+=e.getMessage();
 		}
 		if(!isAccountRoleValid(account.getRole())) {
-			out+="Error: user must have a role.";
+			out+="Error: user must have a role;";
 			
 		}
 		if(out.length()>0) {
